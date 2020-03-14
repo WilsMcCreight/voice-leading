@@ -18,17 +18,16 @@ MyMIDI.addTempo(track, time, tempo)
 
 for i, pitch in enumerate(degrees):
     MyMIDI.addNote(track, channel, pitch, time + i, duration, volume)
+MyMIDI.addNote(track, 1, pitch, time + i, duration, volume)
 
 with open("major-scale.mid", "wb") as output_file:
     MyMIDI.writeFile(output_file)
 
 
 if __name__ == '__main__':
-    
+
     os.system('cls' if os.name == 'nt' else 'clear')
     index = Controller()
     index.create()
     index.compose()
     index.save()
-
-

@@ -1,4 +1,5 @@
 import random
+import os
 from composer import ProceduralComposer
 from song import Song
 from colors import Colors
@@ -7,20 +8,24 @@ class Controller:
     def create(self, fast_startup = 0):
         print(f"{Colors.HEADER}Welcome to the generator, are you ready to make music?{Colors.ENDC}")
         self.data = self.get_inputs()
-        name = input("Finally, what would you like to title your song? ")
+        name = input(f"Finally, what would you like to title your song? {Colors.OKBLUE}")
+        print(Colors.ENDC, end="")
         self.song = Song(self.data, name)
 
     def compose(self):
-        if self.song.data["composition_type"] == "procedural":
+        if self.song.composition_type == "procedural":
             composer = ProceduralComposer()
         else:
             composer = Composer()
         self.song = composer.compose(self.song)
-    
+
     def save(self):
-        with open('./outputs/' + self.song.name + '.mid', 'wb') as output_file:
+        if not os.path.exists('outputs'):
+            os.makedirs('outputs')
+        file_name = self.song.name + '.mid'
+        with open(os.path.join('./outputs/', file_name), 'wb') as output_file:
           self.song.mf.writeFile(output_file)
-        print(f'{Colors.HEADER}Done! Theoretically your song {Colors.OKBLUE}{self.song.name}{Colors.HEADER} has been saved to the {Colors.OKBLUE}outputs{Colors.HEADER} folder.{Colors.ENDC}')
+        print(f'{Colors.HEADER}Done! Theoretically your song "{Colors.OKBLUE}{self.song.name}{Colors.HEADER}" has been saved to the {Colors.OKBLUE}outputs{Colors.HEADER} folder.{Colors.ENDC}')
 
     def get_inputs(self):
         min_length = 1
@@ -39,11 +44,12 @@ class Controller:
             speed = random.randint(min_speed, max_speed)
             print(f"{Colors.HEADER}Random selection. Your song will have a tempo of {Colors.OKBLUE}{speed}{Colors.HEADER}.{Colors.ENDC}")
         return [length, speed]
-    
+
     @staticmethod
     def num_input(prompt, min, max = 500):
         while True:
-            result = input(prompt)
+            result = input(prompt + Colors.OKBLUE)
+            print(Colors.ENDC, end="")
             try:
                 result = int(result)
             except ValueError:
@@ -59,8 +65,3 @@ class Controller:
                 continue
             break
         return result
-
-
-
-
-
