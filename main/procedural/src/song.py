@@ -19,6 +19,7 @@ class Song:
                 self.pitch = pitch
                 self.channel = channel
                 self.time = time
+                self.length = 1
 
         def check_doubling(self):
             pass
@@ -68,10 +69,10 @@ class Song:
         self.mf.addTempo(0, 0, self.tempo)
 
     def add_chord(self, notes):
-        self.mf.addNote(0, notes['S'].channel, notes['S'].pitch, notes['S'].time, 1, 100)
-        self.mf.addNote(0, notes['A'].channel, notes['A'].pitch, notes['A'].time, 1, 100)
-        self.mf.addNote(0, notes['T'].channel, notes['T'].pitch, notes['T'].time, 1, 100)
-        self.mf.addNote(0, notes['B'].channel, notes['B'].pitch, notes['B'].time, 1, 100)
+        self.mf.addNote(0, notes['S'].channel, notes['S'].pitch, notes['S'].time, notes['S'].length, 100)
+        self.mf.addNote(0, notes['A'].channel, notes['A'].pitch, notes['A'].time, notes['A'].length, 100)
+        self.mf.addNote(0, notes['T'].channel, notes['T'].pitch, notes['T'].time, notes['T'].length, 100)
+        self.mf.addNote(0, notes['B'].channel, notes['B'].pitch, notes['B'].time, notes['B'].length, 100)
 
         self.record.append(notes)
 
